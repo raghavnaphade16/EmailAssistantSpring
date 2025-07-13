@@ -1,4 +1,4 @@
-package com.email.writer.app;
+package com.emailassistant.email_writer_rn;
 
 import lombok.Data;
 

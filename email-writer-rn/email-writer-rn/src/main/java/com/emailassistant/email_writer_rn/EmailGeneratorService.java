@@ -1,4 +1,4 @@
-package com.email.writer.app;
+package com.emailassistant.email_writer_rn;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -8,7 +8,6 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
 import java.util.Map;
-import java.util.Objects;
 
 @Service
 public class EmailGeneratorService {
@@ -31,22 +30,24 @@ public class EmailGeneratorService {
         String prompt = buildPrompt(emailRequest);
 
         Map<String, Object> requestBody = Map.of(
-            "contents",new Object[] {
-                    Map.of("parts", new Object[]{
-                            Map.of("text",prompt)
-                    })
+                "contents", new Object[] {
+                        Map.of("parts", new Object[] {
+                                Map.of("text", prompt)
+                        })
                 }
         );
 
-        Mono<String> responseMono = webClient.post()
+        System.out.println(getGeminiKey);
+        String response = webClient.post()
                 .uri(geminiApiUrl)
                 .header("Content-Type", "application/json")
                 .header("X-goog-api-key", getGeminiKey)
                 .bodyValue(requestBody)
                 .retrieve()
-                .bodyToMono(String.class);
+                .bodyToMono(String.class)
+                .block();
 
-        return responseMono.block();
+        return extractResponseContent(response);
 
     }
 
@@ -68,7 +69,7 @@ return  "Error processing request: "+ e.getMessage();
 
     private String buildPrompt(EmailRequest emailRequest) {
         StringBuilder prompt = new StringBuilder();
-        prompt.append("Generate a Professional email reply for the following email content. Please don't generate a subject line ");
+        prompt.append("Generate reply for the following email content. Please don't generate a subject line ");
         if(emailRequest.getTone() != null && !emailRequest.getTone().isEmpty()){
             prompt.append("Use a").append(emailRequest.getTone()).append(" tone.");
         }
