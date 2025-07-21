@@ -1,8 +1,19 @@
 import { useState, useEffect } from "react";
 import { todoService } from "./services/todoService";
+import LoginForm from "./components/LoginForm";
+import SignupForm from "./components/SignupForm";
+import Header from "./components/Header";
+import TodoList from "./components/TodoList";
 import "./App.css";
 
 function App() {
+  // Authentication state
+  const [user, setUser] = useState(null);
+  const [currentView, setCurrentView] = useState("login"); // "login", "signup", "todos"
+  const [authLoading, setAuthLoading] = useState(false);
+  const [authError, setAuthError] = useState("");
+
+  // Todo state
   const [todos, setTodos] = useState([]);
   const [newTodo, setNewTodo] = useState("");
   const [editingId, setEditingId] = useState(null);
@@ -12,10 +23,103 @@ function App() {
   const [searchText, setSearchText] = useState("");
   const [searching, setSearching] = useState(false);
 
-  // Fetch todos on component mount
+  // Check for existing user session on app start
   useEffect(() => {
-    fetchTodos();
+    const savedUser = localStorage.getItem("todoAppUser");
+    if (savedUser) {
+      try {
+        const parsedUser = JSON.parse(savedUser);
+        setUser(parsedUser);
+        setCurrentView("todos");
+      } catch (err) {
+        console.error("Error parsing saved user:", err);
+        localStorage.removeItem("todoAppUser");
+      }
+    }
   }, []);
+
+  // Fetch todos when user logs in
+  useEffect(() => {
+    if (user && currentView === "todos") {
+      fetchTodos();
+    }
+  }, [user, currentView]);
+
+  // Authentication functions
+  const handleLogin = async (formData) => {
+    try {
+      setAuthLoading(true);
+      setAuthError("");
+      
+      // Simulate API call - replace with actual authentication
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      // For demo purposes, accept any email/password combination
+      const userData = {
+        id: Date.now(),
+        name: formData.email.split("@")[0],
+        email: formData.email
+      };
+      
+      setUser(userData);
+      localStorage.setItem("todoAppUser", JSON.stringify(userData));
+      setCurrentView("todos");
+    } catch (err) {
+      setAuthError("Login failed. Please try again.");
+      console.error("Login error:", err);
+    } finally {
+      setAuthLoading(false);
+    }
+  };
+
+  const handleSignup = async (formData) => {
+    try {
+      setAuthLoading(true);
+      setAuthError("");
+      
+      // Simulate API call - replace with actual registration
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      // For demo purposes, accept any valid form data
+      const userData = {
+        id: Date.now(),
+        name: formData.name,
+        email: formData.email
+      };
+      
+      setUser(userData);
+      localStorage.setItem("todoAppUser", JSON.stringify(userData));
+      setCurrentView("todos");
+    } catch (err) {
+      setAuthError("Signup failed. Please try again.");
+      console.error("Signup error:", err);
+    } finally {
+      setAuthLoading(false);
+    }
+  };
+
+  const handleLogout = () => {
+    setUser(null);
+    setCurrentView("login");
+    setTodos([]);
+    setNewTodo("");
+    setEditingId(null);
+    setEditingText("");
+    setSearchText("");
+    setError("");
+    setAuthError("");
+    localStorage.removeItem("todoAppUser");
+  };
+
+  const switchToSignup = () => {
+    setCurrentView("signup");
+    setAuthError("");
+  };
+
+  const switchToLogin = () => {
+    setCurrentView("login");
+    setAuthError("");
+  };
 
   // Fetch all todos
   const fetchTodos = async () => {
@@ -137,10 +241,34 @@ function App() {
     setEditingText("");
   };
 
+  // Render authentication views
+  if (!user) {
+    if (currentView === "signup") {
+      return (
+        <SignupForm
+          onSignup={handleSignup}
+          onSwitchToLogin={switchToLogin}
+          loading={authLoading}
+          error={authError}
+        />
+      );
+    }
+    
+    return (
+      <LoginForm
+        onLogin={handleLogin}
+        onSwitchToSignup={switchToSignup}
+        loading={authLoading}
+        error={authError}
+      />
+    );
+  }
+
+  // Render todo app for authenticated users
   return (
     <div className="app">
       <div className="container">
-        <h1>Todo App</h1>
+        <Header user={user} onLogout={handleLogout} />
 
         {error && <div className="error">{error}</div>}
 
@@ -188,58 +316,18 @@ function App() {
         {(loading || searching) && <div className="loading">Loading...</div>}
 
         {/* Todo list */}
-        <div className="todo-list">
-          {todos.map((todo) => (
-            <div
-              key={todo.id}
-              className={`todo-item ${todo.completed ? "completed" : ""}`}
-            >
-              <div className="todo-content">
-                <input
-                  type="checkbox"
-                  checked={todo.completed}
-                  onChange={() => toggleComplete(todo.id, todo.completed)}
-                  disabled={loading}
-                />
-                {editingId === todo.id ? (
-                  <div className="edit-input">
-                    <input
-                      type="text"
-                      value={editingText}
-                      onChange={(e) => setEditingText(e.target.value)}
-                      onKeyPress={(e) => e.key === "Enter" && saveEdit()}
-                      autoFocus
-                    />
-                    <button onClick={saveEdit} disabled={!editingText.trim()}>
-                      Save
-                    </button>
-                    <button onClick={cancelEdit}>Cancel</button>
-                  </div>
-                ) : (
-                  <span className="todo-title">{todo.title}</span>
-                )}
-              </div>
-              {editingId !== todo.id && (
-                <div className="todo-actions">
-                  <button
-                    onClick={() => startEditing(todo.id, todo.title)}
-                    disabled={loading}
-                    className="edit-btn"
-                  >
-                    Edit
-                  </button>
-                  <button
-                    onClick={() => deleteTodo(todo.id)}
-                    disabled={loading}
-                    className="delete-btn"
-                  >
-                    Delete
-                  </button>
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
+        <TodoList
+          todos={todos}
+          onToggleComplete={toggleComplete}
+          onStartEditing={startEditing}
+          onDelete={deleteTodo}
+          editingId={editingId}
+          editingText={editingText}
+          onEditTextChange={setEditingText}
+          onSaveEdit={saveEdit}
+          onCancelEdit={cancelEdit}
+          loading={loading}
+        />
 
         {todos.length === 0 && !loading && (
           <div className="empty-state">No todos yet. Add one above!</div>
