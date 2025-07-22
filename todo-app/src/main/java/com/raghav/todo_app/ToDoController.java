@@ -37,4 +37,8 @@ public class ToDoController {
     public List<TodoModel> searchAllTodo(@PathVariable String searchText){
         return todoService.searchTodo(searchText);
     }
+    @GetMapping("/user/{userName}")
+    public UserModel getUserByName(@PathVariable String userName) {
+        return todoService.getUserDetails(userName); // internally uses stream
+    }
 }
