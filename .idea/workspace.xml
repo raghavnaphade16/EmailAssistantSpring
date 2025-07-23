@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="f356a47f-70a2-4caa-9827-f6f95c2b1690" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/userms/.gitattributes" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/userms/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/userms/.mvn/wrapper/maven-wrapper.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/userms/mvnw" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/userms/mvnw.cmd" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/userms/pom.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/userms/src/main/java/com/raghav/user/userms/UserController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/userms/src/main/java/com/raghav/user/userms/UserModel.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/userms/src/main/java/com/raghav/user/userms/UserRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/userms/src/main/java/com/raghav/user/userms/UserService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/userms/src/main/java/com/raghav/user/userms/UsermsApplication.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/userms/src/main/resources/application.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/userms/src/test/java/com/raghav/user/userms/UsermsApplicationTests.java" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "raghavnaphade16"
+  }
+}]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/raghavnaphade16/EmailAssistantSpring.git",
+    "accountId": "fc473198-d305-4b38-8d5d-de570c725512"
+  }
+}]]></component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 4
+}]]></component>
+  <component name="ProjectId" id="30EX3y3mjGV7VkJPh5Q4A1wmaKM" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "todoapp",
+    "last_opened_file_path": "D:/java/EmailAssistantSpring"
+  }
+}]]></component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="f356a47f-70a2-4caa-9827-f6f95c2b1690" name="Changes" comment="" />
+      <created>1753193510698</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1753193510698</updated>
+    </task>
+    <servers />
+  </component>
+</project>

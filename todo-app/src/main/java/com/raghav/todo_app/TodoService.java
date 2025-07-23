@@ -48,12 +48,14 @@ public class TodoService {
 
     public UserModel getUserDetails(String userName) {
         try {
+            RestTemplate restTemplate1 = new RestTemplate();
             String url = "http://localhost:8081/api/user/getUser/" + userName;
-            return restTemplate.getForObject(url, UserModel.class);
+            var data = restTemplate1.getForObject(url, UserModel.class);
+            System.out.println("User details fetched from User Service: " + data);
+            return data;
         } catch (Exception e) {
             System.out.println(e);
             throw new RuntimeException(e);
         }
-
     }
 }
